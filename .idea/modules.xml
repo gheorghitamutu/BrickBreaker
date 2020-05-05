@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BrickBreaker.iml" filepath="$PROJECT_DIR$/.idea/BrickBreaker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BrickBreaker.iml" filepath="$PROJECT_DIR$/BrickBreaker.iml" />
     </modules>
   </component>
 </project>
