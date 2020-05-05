@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 043b8d6c112b3cf8ab44fbc5931acfa2285b341756fa014a01d364230536eb88
+-- hash: 9cc1fa9c53dd4cd4013176d7c3bdd92725c4fa1b7b4a4328531ec34e2529d0be
 
 name:           BrickBreaker
 version:        0.1.0.0
@@ -34,6 +34,9 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , sdl2
+    , sdl2-mixer
+    , sdl2-ttf
   default-language: Haskell2010
 
 executable BrickBreaker-exe
@@ -46,6 +49,9 @@ executable BrickBreaker-exe
   build-depends:
       BrickBreaker
     , base >=4.7 && <5
+    , sdl2
+    , sdl2-mixer
+    , sdl2-ttf
   default-language: Haskell2010
 
 test-suite BrickBreaker-test
@@ -59,4 +65,7 @@ test-suite BrickBreaker-test
   build-depends:
       BrickBreaker
     , base >=4.7 && <5
+    , sdl2
+    , sdl2-mixer
+    , sdl2-ttf
   default-language: Haskell2010

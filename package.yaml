@@ -21,6 +21,11 @@ description:         Please see the README on GitHub at <https://github.com/gheo
 
 dependencies:
 - base >= 4.7 && < 5
+- sdl2
+# - sdl2-image
+# - sdl2-gfx
+- sdl2-ttf
+- sdl2-mixer
 
 library:
   source-dirs: src
