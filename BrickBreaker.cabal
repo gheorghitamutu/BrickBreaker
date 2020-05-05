@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 0b2d0da339615ea09e415b04fa8b6081b8bb623a3608d9ecc70604b78e3c1080
+
+name:           BrickBreaker
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/BrickBreaker#readme>
+homepage:       https://github.com/githubuser/BrickBreaker#readme
+bug-reports:    https://github.com/githubuser/BrickBreaker/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/BrickBreaker
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_BrickBreaker
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable BrickBreaker-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_BrickBreaker
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      BrickBreaker
+    , base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite BrickBreaker-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_BrickBreaker
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      BrickBreaker
+    , base >=4.7 && <5
+  default-language: Haskell2010
