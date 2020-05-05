@@ -4,16 +4,16 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0b2d0da339615ea09e415b04fa8b6081b8bb623a3608d9ecc70604b78e3c1080
+-- hash: 043b8d6c112b3cf8ab44fbc5931acfa2285b341756fa014a01d364230536eb88
 
 name:           BrickBreaker
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/BrickBreaker#readme>
-homepage:       https://github.com/githubuser/BrickBreaker#readme
-bug-reports:    https://github.com/githubuser/BrickBreaker/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2020 Author name here
+description:    Please see the README on GitHub at <https://github.com/gheorghitamutu/BrickBreaker#readme>
+homepage:       https://github.com/gheorghitamutu/BrickBreaker#readme
+bug-reports:    https://github.com/gheorghitamutu/BrickBreaker/issues
+author:         Gheorghita Mutu
+maintainer:     Gheorghita Mutu
+copyright:      2020 Gheorghita Mutu
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -23,7 +23,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/BrickBreaker
+  location: https://github.com/gheorghitamutu/BrickBreaker
 
 library
   exposed-modules:
