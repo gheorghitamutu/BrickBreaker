@@ -1,30 +1,49 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
---import Lib
+import SDL
+import SDL.Vect (V2(..), V4(..))
+import Control.Monad (unless)
+import Foreign.C.Types (CInt)
 
-import Control.Concurrent (threadDelay)
-import Foreign.C.Types
-import SDL.Vect
-import qualified SDL
+-- mine
+import qualified Colours (white, black)
 
 screenWidth, screenHeight :: CInt
-(screenWidth, screenHeight) = (640, 480)
+(screenWidth, screenHeight) = (1280, 720)
 
 main :: IO ()
 main = do
--- main = helloWorld
-  SDL.initialize [SDL.InitVideo]
+  initialize [SDL.InitVideo]
+  window <- createWindow "BrickBreaker" defaultWindow { SDL.windowInitialSize = V2 screenWidth screenHeight }
+  renderer <- createRenderer window (-1) defaultRenderer
+  appLoop renderer True
 
-  window <- SDL.createWindow "SDL Tutorial" SDL.defaultWindow { SDL.windowInitialSize = V2 screenWidth screenHeight }
-  SDL.showWindow window
+appLoop :: Renderer -> Bool -> IO ()
+appLoop renderer switch = do
+  events <- pollEvents
+  let eventIsQPress event =
+        case eventPayload event of
+          KeyboardEvent keyboardEvent ->
+            keyboardEventKeyMotion keyboardEvent == Pressed &&
+            keysymKeycode (keyboardEventKeysym keyboardEvent) == KeycodeQ
+          _ -> False
 
-  screenSurface <- SDL.getWindowSurface window
-  let white = V4 maxBound maxBound maxBound maxBound
-  SDL.surfaceFillRect screenSurface Nothing white
-  SDL.updateWindowSurface window
+  let eventIsSPress event =
+          case eventPayload event of
+            KeyboardEvent keyboardEvent ->
+              keyboardEventKeyMotion keyboardEvent == Pressed &&
+              keysymKeycode (keyboardEventKeysym keyboardEvent) == KeycodeS
+            _ -> False
 
-  threadDelay 2000000
+  let exitWanted = any eventIsQPress events || elem SDL.QuitEvent (map SDL.eventPayload events)
 
-  SDL.destroyWindow window
-  SDL.quit
+  let backgroundColor = if switch then Colours.black else Colours.white
+  let maybeNotSwitch = if any eventIsSPress events then not switch else switch
+
+  rendererDrawColor renderer $= backgroundColor
+
+  clear renderer
+  present renderer
+
+  unless exitWanted (appLoop renderer maybeNotSwitch)

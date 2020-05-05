@@ -42,8 +42,10 @@ packages:
 # extra-deps: []
 
 extra-deps:
+#- sdl-image
 - git: https://github.com/haskell-game/sdl2-image.git
   commit: 382395c763b473032721c71921b5c9241142178f
+# - sdl-gfx
 - git: https://github.com/haskell-game/sdl2-gfx.git
   commit: a57e9cf2468f71c357f260f2264095516ea0d90d
 
