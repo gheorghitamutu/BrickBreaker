@@ -1,2 +1,9 @@
+idea-flex.skeleton
+target/
+.idea/
+idea/
+out/
+project/project/
+jflex-*.jar
 .stack-work/
 *~
