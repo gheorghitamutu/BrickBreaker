@@ -3,32 +3,10 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    name: sdl2-image
-    version: 2.0.0
-    git: https://github.com/haskell-game/sdl2-image.git
-    pantry-tree:
-      size: 545
-      sha256: 3f8d686c74dd577de885ef34703859efb2a8d543183ba1ccb71b77868cc052f9
-    commit: 382395c763b473032721c71921b5c9241142178f
-  original:
-    git: https://github.com/haskell-game/sdl2-image.git
-    commit: 382395c763b473032721c71921b5c9241142178f
-- completed:
-    name: sdl2-gfx
-    version: 1.0.0
-    git: https://github.com/haskell-game/sdl2-gfx.git
-    pantry-tree:
-      size: 984
-      sha256: 145a75d9f8b51cde01beed52454d1563ff9ec78307ab67b9a99c259585e55cff
-    commit: a57e9cf2468f71c357f260f2264095516ea0d90d
-  original:
-    git: https://github.com/haskell-game/sdl2-gfx.git
-    commit: a57e9cf2468f71c357f260f2264095516ea0d90d
+packages: []
 snapshots:
 - completed:
-    size: 494638
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/15/11.yaml
-    sha256: 5747328cdcbb8fe9c96fc048b5566167c80dd176a41b52d3b363058e3cc1dc5d
-  original: lts-15.11
+    size: 500539
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/13/30.yaml
+    sha256: 59ad6b944c9903847fecdc1d4815e8500c1f9999d80fd1b4d2d66e408faec44b
+  original: lts-13.30

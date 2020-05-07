@@ -31,6 +31,10 @@ dependencies:
 library:
   source-dirs: src
 
+# WINDOWS 10 FIX!!! - avoiding extra dependencies
+cpp-options:
+  -D_SDL_main_h -DSDL_main_h_ -DSDL_MAIN_HANDLED
+
 executables:
   BrickBreaker-exe:
     main:                Main.hs

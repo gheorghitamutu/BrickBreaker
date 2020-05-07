@@ -14,9 +14,11 @@ screenWidth, screenHeight :: CInt
 
 main :: IO ()
 main = do
-  initialize [SDL.InitVideo]
+  SDL.initializeAll
+  
   window <- createWindow "BrickBreaker" defaultWindow { SDL.windowInitialSize = V2 screenWidth screenHeight }
   renderer <- createRenderer window (-1) defaultRenderer
+  
   appLoop renderer True
 
 appLoop :: Renderer -> Bool -> IO ()

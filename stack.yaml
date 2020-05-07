@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-15.11
+resolver: lts-13.30
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -43,11 +43,11 @@ packages:
 
 extra-deps:
 #- sdl-image
-- git: https://github.com/haskell-game/sdl2-image.git
-  commit: 382395c763b473032721c71921b5c9241142178f
+#- git: https://github.com/haskell-game/sdl2-image.git
+#  commit: 382395c763b473032721c71921b5c9241142178f
 # - sdl-gfx
-- git: https://github.com/haskell-game/sdl2-gfx.git
-  commit: a57e9cf2468f71c357f260f2264095516ea0d90d
+#- git: https://github.com/haskell-game/sdl2-gfx.git
+#  commit: a57e9cf2468f71c357f260f2264095516ea0d90d
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
