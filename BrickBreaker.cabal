@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2bf3dd655abbea990d817d2e7f9cedef0e3ddac64d9b0e321ffe1f2aa6bea31c
+-- hash: 232b2dd7e4e614c09a845c14eab5aec9509e7cb11273bc8bac26a3c0a91b03f2
 
 name:           BrickBreaker
 version:        0.1.0.0
@@ -28,14 +28,16 @@ source-repository head
 library
   exposed-modules:
       Colours
+      Structures
   other-modules:
       Paths_BrickBreaker
   hs-source-dirs:
       src
-  cpp-options: -D_SDL_main_h -DSDL_main_h_ -DSDL_MAIN_HANDLED
   build-depends:
       base >=4.7 && <5
+    , extra
     , linear
+    , mtl
     , sdl2
     , sdl2-gfx
     , sdl2-image
@@ -49,12 +51,13 @@ executable BrickBreaker-exe
       Paths_BrickBreaker
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  cpp-options: -D_SDL_main_h -DSDL_main_h_ -DSDL_MAIN_HANDLED
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       BrickBreaker
     , base >=4.7 && <5
+    , extra
     , linear
+    , mtl
     , sdl2
     , sdl2-gfx
     , sdl2-image
@@ -70,11 +73,12 @@ test-suite BrickBreaker-test
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  cpp-options: -D_SDL_main_h -DSDL_main_h_ -DSDL_MAIN_HANDLED
   build-depends:
       BrickBreaker
     , base >=4.7 && <5
+    , extra
     , linear
+    , mtl
     , sdl2
     , sdl2-gfx
     , sdl2-image

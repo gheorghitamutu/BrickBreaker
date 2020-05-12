@@ -27,13 +27,11 @@ dependencies:
 - sdl2-ttf
 - sdl2-mixer
 - linear
+- mtl
+- extra
 
 library:
   source-dirs: src
-
-# WINDOWS 10 FIX!!! - avoiding extra dependencies
-cpp-options:
-  -D_SDL_main_h -DSDL_main_h_ -DSDL_MAIN_HANDLED
 
 executables:
   BrickBreaker-exe:
@@ -43,6 +41,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
     dependencies:
     - BrickBreaker
 
