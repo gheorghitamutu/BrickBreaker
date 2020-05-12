@@ -29,6 +29,7 @@ dependencies:
 - linear
 - mtl
 - extra
+- text
 
 library:
   source-dirs: src
@@ -44,6 +45,8 @@ executables:
     - -Wall
     dependencies:
     - BrickBreaker
+    - extra
+    - mtl
 
 tests:
   BrickBreaker-test:
@@ -53,5 +56,8 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
     dependencies:
     - BrickBreaker
+    - extra
+    - mtl
