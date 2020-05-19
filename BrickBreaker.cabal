@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 664e4ec8113d9853130000dcb253f9af309f7adf915c6b756b79e0e69b79a382
+-- hash: 18c0099c372d21e1daf96c0b0cbfc1a60dd1cd857584292d1f5b505207cab71b
 
 name:           BrickBreaker
 version:        0.1.0.0
@@ -27,8 +27,13 @@ source-repository head
 
 library
   exposed-modules:
+      Ball
+      Brick
       Common
       Game
+      Paddle
+      Settings
+      World
   other-modules:
       Paths_BrickBreaker
   hs-source-dirs:

@@ -10,12 +10,14 @@ import SDL                    (($=))
 import Control.Monad.Extra (whileM)
 
 import Game
+import Settings
+import World
 
 main :: IO ()
 main =
   C.withSDL $ do
     C.setHintQuality
-    C.withWindow "Brick Breaker" Game.windowSizes $ \w ->
+    C.withWindow "Brick Breaker" Settings.windowSizes $ \w ->
       C.withRenderer w $ \r -> whileM $ C.shouldContinue <$> SDL.pollEvent >>= C.conditionallyRun (gameLoop r)
 
 gameLoop :: SDL.Renderer -> IO ()
