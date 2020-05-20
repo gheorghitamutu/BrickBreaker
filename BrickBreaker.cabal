@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 18c0099c372d21e1daf96c0b0cbfc1a60dd1cd857584292d1f5b505207cab71b
+-- hash: 7712daeeea00c0c5814170b8b16e07ab76694df8b94b5debfaa713bf90b8a759
 
 name:           BrickBreaker
 version:        0.1.0.0
@@ -29,7 +29,7 @@ library
   exposed-modules:
       Ball
       Brick
-      Common
+      EventHandler
       Game
       Paddle
       Settings

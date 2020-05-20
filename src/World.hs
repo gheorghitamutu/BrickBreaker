@@ -16,29 +16,15 @@ data World = World
     worldScore :: CInt,
     worldBricks :: [Brick],
     worldPaddle :: Paddle,
-    worldBall :: Ball
+    worldBall :: Ball,
+    worldStop :: Bool
   }
-
-getWorldLevel :: World -> CInt
-getWorldLevel (World l _ _ _ _) = l
-
-getWorldScore :: World -> CInt
-getWorldScore (World _ s _ _ _) = s
-
-getWorldBricks :: World -> [Brick]
-getWorldBricks (World _ _ b _ _) = b
-
-getWorldPaddle :: World -> Paddle
-getWorldPaddle (World _ _ _ p _) = p
-
-getWorldBall :: World -> Ball
-getWorldBall (World _ _ _ _ b) = b
 
 drawWorld :: (MonadIO m) => World -> Renderer -> m ()
 drawWorld w r = do
-  let bricks = getWorldBricks w
-  let paddle = getWorldPaddle w
-  let ball = getWorldBall w
+  let bricks = worldBricks w
+  let paddle = worldPaddle w
+  let ball = worldBall w
 
   drawBall ball r
   drawPaddle paddle r

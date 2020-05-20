@@ -39,7 +39,7 @@ startingBricks = [
       brickPosition = V2 350 100,
       brickSize = V2 450 150,
       brickColor = V4 0 128 0 100,
-      brickHidden = False 
+      brickHidden = False
     }]
 
 paddle :: Paddle
@@ -67,5 +67,6 @@ initialWorld = World
     worldScore = startingScore,
     worldBricks = startingBricks,
     worldPaddle = paddle,
-    worldBall = ball
+    worldBall = ball,
+    worldStop = False
   }

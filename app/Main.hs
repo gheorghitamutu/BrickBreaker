@@ -1,33 +1,55 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE BlockArguments #-}
 
 module Main (main) where
 
 import qualified SDL
-import qualified Common as C
 
 import Control.Monad.IO.Class (MonadIO)
 import SDL                    (($=))
-import Control.Monad.Extra (whileM)
+import SDL.Framerate
+import Prelude                hiding(Left, Right)
+import EventHandler (eventToIntent, shouldQuit, actionHandler)
 
 import Game
 import Settings
 import World
+import Control.Monad.Cont (unless)
+
 
 main :: IO ()
-main =
-  C.withSDL $ do
-    C.setHintQuality
-    C.withWindow "Brick Breaker" Settings.windowSizes $ \w ->
-      C.withRenderer w $ \r -> whileM $ C.shouldContinue <$> SDL.pollEvent >>= C.conditionallyRun (gameLoop r)
+main = do
+  SDL.initialize [SDL.InitVideo]
+  w <- SDL.createWindow "Brick Breaker" SDL.defaultWindow { SDL.windowInitialSize = Settings.windowSizes }
+  r <- SDL.createRenderer w (-1) SDL.defaultRenderer
+  SDL.showWindow w
 
-gameLoop :: SDL.Renderer -> IO ()
-gameLoop = draw -- TODO: should add update and handle input and event here as well!
+  let fps = 60
 
-draw :: SDL.Renderer -> IO ()
-draw renderer = do
-  clearScreen renderer
-  drawWorld initialWorld renderer
-  SDL.present renderer
+  SDL.Framerate.with fps $ gameLoop r initialWorld
+
+  SDL.destroyWindow w
+  SDL.quit
+
+
+gameLoop :: SDL.Renderer -> World -> SDL.Framerate.Manager -> IO ()
+gameLoop r w fpsm = do
+      event <- SDL.pollEvent
+      let action = eventToIntent event
+      let quit = shouldQuit action
+
+      let newWorld = actionHandler action w
+      draw r w
+
+      SDL.Framerate.delay_ fpsm
+
+      unless quit (gameLoop r newWorld fpsm)
+
+draw :: SDL.Renderer -> World -> IO ()
+draw r w = do
+  clearScreen r
+  drawWorld w r
+  SDL.present r
 
 clearScreen :: (MonadIO m) => SDL.Renderer -> m ()
 clearScreen r = do

@@ -14,17 +14,5 @@ data Paddle = Paddle
     paddleHidden :: Bool
   }
 
-getPaddlePosition :: Paddle -> V2 CInt
-getPaddlePosition (Paddle p _ _ _) = p
-
-getPaddleSize:: Paddle -> V2 CInt
-getPaddleSize (Paddle _ s _ _) = s
-
-getPaddleColor :: Paddle -> V4 Word8
-getPaddleColor (Paddle _ _ c _) = c
-
-isPaddleHidden :: Paddle -> Bool
-isPaddleHidden (Paddle _ _ _ h) = h
-
 drawPaddle :: (MonadIO m) => Paddle -> Renderer -> m ()
-drawPaddle p r = SDL.Primitive.fillRectangle r (getPaddleSize p) (getPaddlePosition p) (getPaddleColor p)
+drawPaddle p r = SDL.Primitive.fillRectangle r (paddleSize p) (paddlePosition p) (paddleColor p)

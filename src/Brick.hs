@@ -14,17 +14,5 @@ data Brick = Brick
     brickHidden :: Bool
   }
 
-getBrickPosition :: Brick -> V2 CInt
-getBrickPosition (Brick p _ _ _) = p
-
-getBrickSize:: Brick -> V2 CInt
-getBrickSize (Brick _ s _ _) = s
-
-getBrickColor :: Brick -> V4 Word8
-getBrickColor (Brick _ _ c _) = c
-
-isBrickHidden :: Brick -> Bool
-isBrickHidden (Brick _ _ _ h) = h
-
 drawBrick :: (MonadIO mBrick) => Brick -> Renderer -> mBrick ()
-drawBrick b r = SDL.Primitive.fillRectangle r (getBrickSize b) (getBrickPosition b) (getBrickColor b)
+drawBrick b r = SDL.Primitive.fillRectangle r (brickSize b) (brickPosition b) (brickColor b)
