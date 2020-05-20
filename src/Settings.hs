@@ -11,3 +11,6 @@ windowWidth = 1280
 
 windowSizes :: V2 CInt
 windowSizes = V2 windowWidth windowHeight
+
+fps :: Int
+fps = 60

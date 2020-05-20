@@ -1,10 +1,13 @@
-module Game where
+module Game (loop, initialWorld) where
 
 import SDL
 import qualified SDL.Primitive
 import Foreign.C.Types (CInt)
 import Data.Word
 import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.Cont (unless)
+import SDL.Framerate
+import EventHandler (eventToIntent, shouldQuit, actionHandler)
 
 import Ball
 import Paddle
@@ -70,3 +73,27 @@ initialWorld = World
     worldBall = ball,
     worldStop = False
   }
+
+draw :: SDL.Renderer -> World -> IO ()
+draw r w = do
+  clearScreen r
+  drawWorld w r
+  SDL.present r
+
+clearScreen :: (MonadIO m) => SDL.Renderer -> m ()
+clearScreen r = do
+  SDL.rendererDrawColor r $= SDL.V4 255 255 255 100
+  SDL.clear r
+
+loop :: SDL.Renderer -> World -> SDL.Framerate.Manager -> IO ()
+loop r w fpsm = do
+      event <- SDL.pollEvent
+      let action = eventToIntent event
+      let quit = shouldQuit action
+
+      let newWorld = actionHandler action w
+      draw r w
+
+      SDL.Framerate.delay_ fpsm
+
+      unless quit (loop r newWorld fpsm)
