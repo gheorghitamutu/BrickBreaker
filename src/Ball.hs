@@ -14,17 +14,5 @@ data Ball = Ball
     ballHidden :: Bool
   }
 
-getBallPosition :: Ball -> V2 CInt
-getBallPosition (Ball s _ _ _) = s
-
-getBallRadius :: Ball -> CInt
-getBallRadius (Ball _ r _ _) = r
-
-getBallColor :: Ball -> V4 Word8
-getBallColor (Ball _ _ c _) = c
-
-isBallHidden :: Ball -> Bool
-isBallHidden (Ball _ _ _ h) = h
-
 drawBall :: (MonadIO m) => Ball -> Renderer -> m ()
-drawBall b r = SDL.Primitive.fillCircle r (getBallPosition b) (getBallRadius b) (getBallColor b)
+drawBall b r = SDL.Primitive.fillCircle r (ballPosition b) (ballRadius b) (ballColor b)
