@@ -1,4 +1,4 @@
-module EventHandler (Intent(..), eventToIntent, shouldQuit, actionHandler) where
+module EventHandler (Intent(..), eventToIntent, shouldQuit, actionHandler, shouldRestart) where
 
 import SDL hiding(Unknown)
 import Prelude hiding (Left, Right)
@@ -10,6 +10,7 @@ data Intent = Quit
   | MoveRight
   | MoveUp
   | MoveDown
+  | Restart
   | Unknown
 
 
@@ -44,8 +45,13 @@ getKey (SDL.KeyboardEventData _ SDL.Pressed False keysym) =
     SDL.KeycodeDown   -> MoveDown
     SDL.KeycodeLeft   -> MoveLeft
     SDL.KeycodeRight  -> MoveRight
+    SDL.KeycodeR      -> Restart
     _                 -> Unknown
 
 shouldQuit :: Intent -> Bool
 shouldQuit Quit = True
 shouldQuit _ = False
+
+shouldRestart :: Intent -> Bool
+shouldRestart Restart = True
+shouldRestart _ = False

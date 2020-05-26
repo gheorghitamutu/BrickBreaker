@@ -7,7 +7,7 @@ import Data.Word
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Cont (unless)
 import SDL.Framerate
-import EventHandler (eventToIntent, shouldQuit, actionHandler)
+import EventHandler (eventToIntent, shouldQuit, actionHandler, shouldRestart)
 
 import Ball
 import Paddle
@@ -89,16 +89,15 @@ clearScreen r = do
   SDL.rendererDrawColor r $= SDL.V4 255 255 255 100
   SDL.clear r
 
-
-
 loop :: SDL.Renderer -> World -> SDL.Framerate.Manager -> IO ()
 loop r w fpsm = do
       event <- SDL.pollEvent
       let action = eventToIntent event
       let quit = shouldQuit action
+      let restart = shouldRestart action
 
       let stateUpdatedWorld = actionHandler action w
-      let updatedWorld = updateWorld stateUpdatedWorld
+      let updatedWorld = if not restart then updateWorld stateUpdatedWorld else initialWorld
       draw r updatedWorld
 
       SDL.Framerate.delay_ fpsm
