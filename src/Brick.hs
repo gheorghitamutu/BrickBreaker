@@ -16,3 +16,6 @@ data Brick = Brick
 
 drawBrick :: (MonadIO mBrick) => Brick -> Renderer -> mBrick ()
 drawBrick b r = SDL.Primitive.fillRectangle r (brickSize b) (brickPosition b) (brickColor b)
+
+updateBricks :: [Brick] -> [Brick]
+updateBricks = filter (not . brickHidden)

@@ -3,20 +3,23 @@ module EventHandler (Intent(..), eventToIntent, shouldQuit, actionHandler) where
 import SDL hiding(Unknown)
 import Prelude hiding (Left, Right)
 import World
+import Paddle
 
 data Intent = Quit
-  | Left
-  | Right
-  | Up
-  | Down
+  | MoveLeft
+  | MoveRight
+  | MoveUp
+  | MoveDown
   | Unknown
 
 
 actionHandler :: Intent -> World -> World
-actionHandler Unknown w = w
 actionHandler Quit w = w
-actionHandler Left w = w
--- TODO: handle paddle movement
+actionHandler MoveRight w = changePaddleDirection Paddle.Right w
+actionHandler MoveUp w = changePaddleDirection Paddle.Up w
+actionHandler MoveLeft w = changePaddleDirection Paddle.Left w
+actionHandler MoveDown w = changePaddleDirection Paddle.Down w
+actionHandler Unknown w = w
 -- TODO: generate a new world accordingly
 
 eventToIntent :: Maybe SDL.Event -> Intent
@@ -37,10 +40,10 @@ getKey (SDL.KeyboardEventData _ SDL.Pressed True _) = Unknown
 getKey (SDL.KeyboardEventData _ SDL.Pressed False keysym) =
   case SDL.keysymKeycode keysym of
     SDL.KeycodeEscape -> Quit
-    SDL.KeycodeUp     -> Up
-    SDL.KeycodeDown   -> Down
-    SDL.KeycodeLeft   -> Left
-    SDL.KeycodeRight  -> Right
+    SDL.KeycodeUp     -> MoveUp
+    SDL.KeycodeDown   -> MoveDown
+    SDL.KeycodeLeft   -> MoveLeft
+    SDL.KeycodeRight  -> MoveRight
     _                 -> Unknown
 
 shouldQuit :: Intent -> Bool

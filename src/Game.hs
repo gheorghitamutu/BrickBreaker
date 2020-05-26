@@ -50,8 +50,10 @@ paddle = Paddle
   {
     paddlePosition = V2 600 680,
     paddleSize = V2 700 700,
-    paddleColor = V4 0 255 0 100,
-    paddleHidden = False
+    paddleColor = V4 255 187 80 100,
+    paddleHidden = False,
+    paddleVelocity = 5,
+    paddleDirection = Paddle.Idle
   }
 
 ball :: Ball
@@ -60,7 +62,9 @@ ball = Ball
     ballPosition = V2 650 670, -- hellish to convert primitives
     ballRadius = 10,
     ballColor = V4 255 0 0 100,
-    ballHidden = False
+    ballHidden = False,
+    ballVelocity = 1,
+    ballDirection = Ball.Idle
   }
 
 initialWorld :: World
@@ -85,6 +89,8 @@ clearScreen r = do
   SDL.rendererDrawColor r $= SDL.V4 255 255 255 100
   SDL.clear r
 
+
+
 loop :: SDL.Renderer -> World -> SDL.Framerate.Manager -> IO ()
 loop r w fpsm = do
       event <- SDL.pollEvent
@@ -92,8 +98,9 @@ loop r w fpsm = do
       let quit = shouldQuit action
 
       let newWorld = actionHandler action w
-      draw r w
+      let updatedWorld = updateWorld newWorld
+      draw r updatedWorld
 
       SDL.Framerate.delay_ fpsm
 
-      unless quit (loop r newWorld fpsm)
+      unless quit (loop r updatedWorld fpsm)
