@@ -63,8 +63,8 @@ ball = Ball
     ballRadius = 10,
     ballColor = V4 255 0 0 100,
     ballHidden = False,
-    ballVelocity = 1,
-    ballDirection = Ball.Idle
+    ballVelocity = 5,
+    ballDirection = Ball.LT
   }
 
 initialWorld :: World
@@ -97,8 +97,8 @@ loop r w fpsm = do
       let action = eventToIntent event
       let quit = shouldQuit action
 
-      let newWorld = actionHandler action w
-      let updatedWorld = updateWorld newWorld
+      let stateUpdatedWorld = actionHandler action w
+      let updatedWorld = updateWorld stateUpdatedWorld
       draw r updatedWorld
 
       SDL.Framerate.delay_ fpsm

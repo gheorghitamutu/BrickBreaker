@@ -10,6 +10,7 @@ import SDL
 import Control.Monad.IO.Class (MonadIO)
 import qualified SDL.Primitive
 import Control.Monad.Cont (forM, forM_)
+import Prelude hiding (LT)
 
 data World = World
   {
@@ -26,7 +27,9 @@ updateWorld w = do
   let stop = worldStop w
   let bricks = updateBricks (worldBricks w)
   let paddle = updatePaddle (worldPaddle w) Settings.windowWidth
-  let ball = updateBall (worldBall w)
+
+  let hitBall = switchBallDirectionWhenItHitsPaddle (worldBall w) paddle
+  let ball = updateBall hitBall
 
   if stop then w
   else World (worldLevel w) (worldScore w) bricks paddle ball (worldStop w)
@@ -47,3 +50,25 @@ changePaddleDirection d w = do
   let np = Paddle (paddlePosition op) (paddleSize op) (paddleColor op) (paddleHidden op) (paddleVelocity op) d
 
   World (worldLevel w) (worldScore w) (worldBricks w) np (worldBall w) (worldStop w)
+
+aabbCollision :: V2 CInt -> V2 CInt -> V2 CInt -> V2 CInt -> Bool
+aabbCollision (V2 al au) (V2 ar ad) (V2 bl bu) (V2 br bd) = ar >= bl && al <= br && ad >= bu && au <= bd
+
+switchBallDirectionWhenItHitsPaddle :: Ball -> Paddle -> Ball
+switchBallDirectionWhenItHitsPaddle b p = do
+  let bp = ballPosition b
+  let rb = ballRadius b
+  let ltb = bp - V2 rb rb
+  let rdb = bp + V2 rb rb
+  let db = ballDirection b
+
+  let ltp = paddlePosition p
+  let rdp = paddleSize p
+
+  if aabbCollision ltb rdb ltp rdp
+    then case db of
+           LD -> Ball bp rb (ballColor b) (ballHidden b) (ballVelocity b) LT
+           RD -> Ball bp rb (ballColor b) (ballHidden b) (ballVelocity b) RT
+           LT -> b
+           RT -> b
+    else b
