@@ -13,15 +13,14 @@ data Intent = Quit
   | Restart
   | Unknown
 
-
 actionHandler :: Intent -> World -> World
 actionHandler Quit w = w
 actionHandler MoveRight w = changePaddleDirection Paddle.Right w
 actionHandler MoveUp w = changePaddleDirection Paddle.Up w
 actionHandler MoveLeft w = changePaddleDirection Paddle.Left w
 actionHandler MoveDown w = changePaddleDirection Paddle.Down w
+actionHandler Restart w = w
 actionHandler Unknown w = w
--- TODO: generate a new world accordingly
 
 eventToIntent :: Maybe SDL.Event -> Intent
 eventToIntent = maybe Unknown (payloadToIntent . extractPayload)
@@ -33,7 +32,6 @@ payloadToIntent :: SDL.EventPayload -> Intent
 payloadToIntent SDL.QuitEvent         = Quit
 payloadToIntent (SDL.KeyboardEvent k) = getKey k
 payloadToIntent _                     = Unknown
-
 
 getKey :: SDL.KeyboardEventData -> Intent
 getKey (SDL.KeyboardEventData _ SDL.Released _ _) = Unknown
