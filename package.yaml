@@ -30,6 +30,8 @@ dependencies:
 - mtl
 - extra
 - text
+- random
+- time
 
 library:
   source-dirs: src
@@ -47,6 +49,7 @@ executables:
     - BrickBreaker
     - extra
     - mtl
+    - random
 
 tests:
   BrickBreaker-test:
@@ -61,3 +64,4 @@ tests:
     - BrickBreaker
     - extra
     - mtl
+    - random

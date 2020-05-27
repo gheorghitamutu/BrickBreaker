@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7712daeeea00c0c5814170b8b16e07ab76694df8b94b5debfaa713bf90b8a759
+-- hash: 4a8a51cf98552f769e09c6e316a6cf1bc40ddd8f460da654f2817bb62ef05ba7
 
 name:           BrickBreaker
 version:        0.1.0.0
@@ -43,12 +43,14 @@ library
     , extra
     , linear
     , mtl
+    , random
     , sdl2
     , sdl2-gfx
     , sdl2-image
     , sdl2-mixer
     , sdl2-ttf
     , text
+    , time
   default-language: Haskell2010
 
 executable BrickBreaker-exe
@@ -64,12 +66,14 @@ executable BrickBreaker-exe
     , extra
     , linear
     , mtl
+    , random
     , sdl2
     , sdl2-gfx
     , sdl2-image
     , sdl2-mixer
     , sdl2-ttf
     , text
+    , time
   default-language: Haskell2010
 
 test-suite BrickBreaker-test
@@ -86,10 +90,12 @@ test-suite BrickBreaker-test
     , extra
     , linear
     , mtl
+    , random
     , sdl2
     , sdl2-gfx
     , sdl2-image
     , sdl2-mixer
     , sdl2-ttf
     , text
+    , time
   default-language: Haskell2010
