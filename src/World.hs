@@ -7,10 +7,14 @@ import Settings
 
 import Foreign.C.Types (CInt)
 import SDL
+import qualified SDL.Font
+import Control.Arrow ((***))
+import SDL.Font (load)
 import Control.Monad.IO.Class (MonadIO)
 import qualified SDL.Primitive
 import Control.Monad.Cont (forM, forM_)
 import Prelude hiding (LT)
+import qualified Data.Text
 
 import System.Random (StdGen, mkStdGen, next, randomIO, randomRIO)
 import GHC.IO.Unsafe (unsafePerformIO)
@@ -19,7 +23,7 @@ import Data.IORef.Extra (IORef, writeIORef, readIORef, newIORef)
 data World = World
   {
     worldLevel :: CInt,
-    worldScore :: CInt,
+    worldScore :: Int,
     worldBricks :: [Brick],
     worldPaddle :: Paddle,
     worldBall :: Ball,
@@ -32,16 +36,21 @@ updateWorld w = do
   let bricks = updateBricks (worldBricks w)
   let paddle = updatePaddle (worldPaddle w) Settings.windowWidth
   let ballHitPaddle = switchBallDirectionWhenItHitsPaddle (worldBall w) paddle
-  let ballHitBricks =
-        if ballCollidedBrick (worldBall w) bricks
+  let ballHitBrick = ballCollidedBrick (worldBall w) bricks
+  let ballThroughBricks =
+        if ballHitBrick
           then switchBallDirectionWhenItHitsBrick ballHitPaddle (getCollidedBrick (worldBall w) bricks)
           else ballHitPaddle
-  let ball = updateBall ballHitBricks
+  let score =
+        if ballHitBrick
+          then worldScore w + getNoCollidedBricks (worldBall w) bricks
+          else worldScore w
+  let ball = updateBall ballThroughBricks
   let bricksNotHit = getNotCollidedBricks ballHitPaddle bricks
-  
+
   if stop
     then w
-    else World (worldLevel w) (worldScore w) bricksNotHit paddle ball (null bricksNotHit)
+    else World (worldLevel w) score bricksNotHit paddle ball (null bricksNotHit)
 
 drawWorld :: (MonadIO m) => World -> Renderer -> m ()
 drawWorld w r = do
@@ -53,6 +62,10 @@ drawWorld w r = do
   drawPaddle paddle r
   forM_ bricks $ \b -> drawBrick b r
 
+  f <- load "assets/font.ttf" 50 -- messy...
+  renderSolidText r f (V4 0 0 0 127) ("Level  " ++ show (worldLevel w)) (V2 1000 0)
+  renderSolidText r f (V4 0 0 0 127) ("Score  " ++ show (worldScore w)) (V2 1000 50)
+
 changePaddleDirection :: Paddle.Direction -> World -> World
 changePaddleDirection d w = do
   let op = worldPaddle w
@@ -62,7 +75,6 @@ changePaddleDirection d w = do
 
 aabbCollision :: V2 CInt -> V2 CInt -> V2 CInt -> V2 CInt -> Bool
 aabbCollision (V2 al au) (V2 ar ad) (V2 bl bu) (V2 br bd) = ar >= bl && al <= br && ad >= bu && au <= bd
-
 
 switchBallDirectionWhenItHitsPaddle :: Ball -> Paddle -> Ball
 switchBallDirectionWhenItHitsPaddle b p = do
@@ -115,6 +127,11 @@ getCollidedBrick :: Ball -> [Brick] -> Brick
 getCollidedBrick b bs = do
   let bricksCollided = filter (ballBrickAabbCollision b) bs
   head bricksCollided
+
+getNoCollidedBricks :: Ball -> [Brick] -> Int
+getNoCollidedBricks b bs = do
+  let bricksCollided = filter (ballBrickAabbCollision b) bs
+  length bricksCollided
 
 getNotCollidedBricks :: Ball -> [Brick] -> [Brick]
 getNotCollidedBricks b = filter (not . ballBrickAabbCollision b)
@@ -185,3 +202,22 @@ generateBricks = do
   let bs4 = mapBricks px py4
 
   bs0 ++ bs1 ++ bs2 ++ bs3 ++ bs4
+
+-- https://aas.sh/blog/making-a-game-with-haskell-and-apecs/
+renderSolidText :: (MonadIO m) => SDL.Renderer -> SDL.Font.Font -> SDL.Font.Color -> String -> V2 CInt -> m ()
+renderSolidText r fo = renderText r fo (SDL.Font.solid fo)
+
+-- Render text to the screen easily
+-- renderSolidText calls this
+renderText :: (MonadIO m) =>  SDL.Renderer -> SDL.Font.Font -> (SDL.Font.Color -> Data.Text.Text -> m SDL.Surface) ->
+           SDL.Font.Color -> String -> V2 CInt -> m ()
+renderText r fo fu c t (V2 x y) = do
+  let text = Data.Text.pack t
+  surface <- fu c text
+  texture <- SDL.createTextureFromSurface r surface
+  SDL.freeSurface surface
+  fontSize <- SDL.Font.size fo text
+  let (w, h) = (fromIntegral *** fromIntegral) fontSize
+
+  SDL.copy r texture Nothing (Just (Rectangle (P $ V2 x y) (V2 w h)))
+  SDL.destroyTexture texture

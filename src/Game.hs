@@ -2,10 +2,12 @@ module Game (loop, initialWorld) where
 
 import SDL
 import qualified SDL.Primitive
+import qualified SDL.Font
+import qualified Data.Text
 import Foreign.C.Types (CInt)
 import Data.Word
 import Control.Monad.IO.Class (MonadIO)
-import Control.Monad.Cont (unless)
+import Control.Monad.Cont (unless, when)
 import SDL.Framerate
 import EventHandler (eventToIntent, shouldQuit, actionHandler, shouldRestart)
 
@@ -18,7 +20,7 @@ import Settings
 startingLevel :: CInt
 startingLevel = 0
 
-startingScore :: CInt
+startingScore :: Int
 startingScore = 0
 
 startingBricks :: [Brick]
@@ -29,7 +31,7 @@ paddle = Paddle
   {
     paddlePosition = V2 600 680,
     paddleSize = V2 700 700,
-    paddleColor = V4 255 187 80 100,
+    paddleColor = V4 255 165 0 255,
     paddleHidden = False,
     paddleVelocity = 7,
     paddleDirection = Paddle.Idle
@@ -39,8 +41,8 @@ ball :: Ball
 ball = Ball
   {
     ballPosition = V2 650 670, -- hellish to convert primitives
-    ballRadius = 10,
-    ballColor = V4 255 0 0 100,
+    ballRadius = 20,
+    ballColor = V4 0 191 255 255,
     ballHidden = False,
     ballVelocity = 5,
     ballDirection = Ball.LT
@@ -77,7 +79,9 @@ loop r w fpsm = do
 
       let stateUpdatedWorld = actionHandler action w
       let updatedWorld = if not restart then updateWorld stateUpdatedWorld else initialWorld
+
       draw r updatedWorld
+
 
       SDL.Framerate.delay_ fpsm
 
